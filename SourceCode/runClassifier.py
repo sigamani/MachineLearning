@@ -15,18 +15,18 @@ from sklearn.naive_bayes import GaussianNB
 
 # We will calculate the P-R curve for each classifier
 from sklearn.metrics import precision_recall_curve, f1_score
+from sklearn.cross_validation import train_test_split
     
 
 
 py.sign_in('michael.sigamani_sr', 'pUwzlMuStskB3R2zemzc')
-URL = "http://sigamani.com/MachineLearningData/JanFeb2016.data"
 
 
 # np.set_printoptions(threshold=np.inf)
 
 # =====================================================================
 
-def download_data():
+def download_data(URL):
     '''
     Downloads the data for this script into a pandas DataFrame.
     '''
@@ -60,8 +60,10 @@ def download_data():
     #return frame[['col1', 'col4', ...]]
 
     # Return the entire frame
-    return frame
 
+    print("Downloading data from {}".format(URL))
+
+    return frame
 
 # =====================================================================
 
@@ -116,6 +118,15 @@ def get_features_and_labels(frame):
     return X_train, X_test, y_train, y_test
 
 
+def get_features_and_labels2(frame):
+    
+    arr = np.array(frame, dtype=np.float)
+    X, y = arr[:, :-1], arr[:, -1]
+
+    return X, y
+
+
+
 # =====================================================================
 
 
@@ -158,13 +169,17 @@ def evaluate_classifier(X_train, X_test, y_train, y_test):
     # Include the score in the title
     yield 'NuSVC (F1 score={:.3f})'.format(score), precision, recall
 
-    base0_classifier = DecisionTreeClassifier(max_depth=6, min_samples_leaf=5, criterion="entropy")
+    base_classifier = DecisionTreeClassifier(max_depth=6, min_samples_leaf=5, criterion="entropy")
+    base_classifier.fit(X_train,y_train)
+    tree.export_graphviz(base_classifier, out_file=r'C:\\Users\\michael\\tree.dot') 
+
 
     # Test the Ada boost classifier
-    classifier = AdaBoostClassifier(base0_classifier, n_estimators=500, learning_rate=1.0, algorithm='SAMME.R')
+    classifier = AdaBoostClassifier(base_classifier, n_estimators=500, learning_rate=1.0, algorithm='SAMME.R')
     
     # Fit the classifier
     classifier.fit(X_train, y_train)
+
     score = f1_score(y_test, classifier.predict(X_test))
 
     # Generate the P-R curve
@@ -219,7 +234,7 @@ def plot(results):
     # Plot the precision-recall curves
 
     fig = plt.figure(figsize=(6, 6))
-    fig.canvas.set_window_title('Classifying data from ' + URL)
+    fig.canvas.set_window_title('Classifying data')
 
     for label, precision, recall in results:
         plt.plot(recall, precision, label=label)
@@ -229,30 +244,8 @@ def plot(results):
     plt.ylabel('Recall')
     plt.legend(loc='lower left')
 
-    # Let matplotlib improve the layout
     plt.tight_layout()
-
-    # ==================================
-    # Display the plot in interactive UI
     plt.show()
-
-    # To save the plot to an image file, use savefig()
-    #plt.savefig('plot.png')
-
-    # Open the image file with the default image viewer
-    #import subprocess
-    #subprocess.Popen('plot.png', shell=True)
-
-    # To save the plot to an image in memory, use BytesIO and savefig()
-    # This can then be written to any stream-like object, such as a
-    # file or HTTP response.
-    #from io import BytesIO
-    #img_stream = BytesIO()
-    #plt.savefig(img_stream, fmt='png')
-    #img_bytes = img_stream.getvalue()
-    #print('Image is {} bytes - {!r}'.format(len(img_bytes), img_bytes[:8] + b'...'))
-
-    # Closing the figure allows matplotlib to release the memory used.
     plt.close()
 
 
@@ -275,6 +268,8 @@ def plotResult(array):
     plt.show()
     plt.close()
 
+
+
 def makePlot(input):
 
   #  x = np.random.randn(500)
@@ -286,13 +281,21 @@ def makePlot(input):
 
 if __name__ == "__main__":
 
-    # Download the data set from URL
-    print("Downloading data from {}".format(URL))
-    frame = download_data()
+    URL1 = "http://sigamani.com/MachineLearningData/JanFeb2016.data"
+    URL2 = "http://sigamani.com/MachineLearningData/FebMar2016.data"
+
+    frame = download_data(URL1)
+    frame2 = download_data(URL2)
 
     # Process data into feature and label arrays
     print("Processing {} samples with {} attributes".format(len(frame.index), len(frame.columns)))
-    X_train, X_test, y_train, y_test = get_features_and_labels(frame)
+    
+    #In-sample testing     
+    #X_train, X_test, y_train, y_test = get_features_and_labels(frame)
+
+    # Out-of-sample testing 
+    X_train, y_train = get_features_and_labels2(frame)
+    X_test, y_test = get_features_and_labels2(frame2)
 
     # Evaluate multiple classifiers on the data
     print("Evaluating classifiers")

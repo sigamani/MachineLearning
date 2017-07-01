@@ -5,7 +5,7 @@
     <ProjectGuid>9fc75f4f-6b9d-40c9-8117-281fae9e425b</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Classifier.py</StartupFile>
+    <StartupFile>runClassifier.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,13 +24,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classifier.py">
+    <Compile Include="runClassifier.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="getData.py" />
-    <Compile Include="storedprocs.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda36-64" />
