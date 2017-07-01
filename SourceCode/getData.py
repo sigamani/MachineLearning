@@ -48,6 +48,4 @@ def makeCombinedFiles():
             df2.to_csv(filename, index=False)
             #print(df2)
 
-if __name__ == "__main__":
 
-    makeCombinedFiles()
