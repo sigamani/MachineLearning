@@ -1,0 +1,100 @@
+﻿----- Installing 'pymssql' -----
+Collecting pymssql
+  Downloading pymssql-2.1.3.tar.gz (897kB)
+Building wheels for collected packages: pymssql
+  Running setup.py bdist_wheel for pymssql: started
+  Running setup.py bdist_wheel for pymssql: finished with status 'error'
+  Complete output from command "C:\Program Files\Anaconda3\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-1qpgxkmw\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" bdist_wheel -d C:\Users\michael\AppData\Local\Temp\tmpqin05om2pip-wheel- --python-tag cp36:
+  setup.py: platform.system() => 'Windows'
+  setup.py: platform.architecture() => ('64bit', 'WindowsPE')
+  running bdist_wheel
+  running build
+  running build_ext
+  building '_mssql' extension
+  error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": http://landinghub.visualstudio.com/visual-cpp-build-tools
+  
+  ----------------------------------------
+  Running setup.py clean for pymssql
+  Failed building wheel for pymssql
+Failed to build pymssql
+Installing collected packages: pymssql
+  Running setup.py install for pymssql: started
+    Running setup.py install for pymssql: finished with status 'error'
+    Complete output from command "C:\Program Files\Anaconda3\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-1qpgxkmw\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record C:\Users\michael\AppData\Local\Temp\pip-32ay59mo-record\install-record.txt --single-version-externally-managed --compile:
+    setup.py: platform.system() => 'Windows'
+    setup.py: platform.architecture() => ('64bit', 'WindowsPE')
+    running install
+    running build
+    running build_ext
+    cythoning _mssql.pyx to _mssql.c
+    warning: _mssql.pyx:143:4: Exception already a builtin Cython type
+    building '_mssql' extension
+    error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": http://landinghub.visualstudio.com/visual-cpp-build-tools
+    
+    ----------------------------------------
+Command ""C:\Program Files\Anaconda3\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-1qpgxkmw\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record C:\Users\michael\AppData\Local\Temp\pip-32ay59mo-record\install-record.txt --single-version-externally-managed --compile" failed with error code 1 in C:\Users\michael\AppData\Local\Temp\pip-build-1qpgxkmw\pymssql\
+----- Failed to install 'pymssql' -----
+
+----- Installing 'pymssql==2.1.3' -----
+Collecting pymssql==2.1.3
+  Using cached pymssql-2.1.3.tar.gz
+Installing collected packages: pymssql
+  Running setup.py install for pymssql: started
+    Running setup.py install for pymssql: finished with status 'error'
+    Complete output from command "C:\Program Files\Python36\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-7_4ru6tx\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record C:\Users\michael\AppData\Local\Temp\pip-r8o0f9kt-record\install-record.txt --single-version-externally-managed --compile:
+    setup.py: platform.system() => 'Windows'
+    setup.py: platform.architecture() => ('64bit', 'WindowsPE')
+    running install
+    running build
+    running build_ext
+    building '_mssql' extension
+    error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": http://landinghub.visualstudio.com/visual-cpp-build-tools
+    
+    ----------------------------------------
+Command ""C:\Program Files\Python36\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-7_4ru6tx\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record C:\Users\michael\AppData\Local\Temp\pip-r8o0f9kt-record\install-record.txt --single-version-externally-managed --compile" failed with error code 1 in C:\Users\michael\AppData\Local\Temp\pip-build-7_4ru6tx\pymssql\
+----- Failed to install 'pymssql==2.1.3' -----
+
+----- Installing 'psycopg2' -----
+Collecting psycopg2
+  Downloading psycopg2-2.7.1-cp36-cp36m-win_amd64.whl (939kB)
+Installing collected packages: psycopg2
+Successfully installed psycopg2-2.7.1
+----- Successfully installed 'psycopg2' -----
+
+----- Installing 'pymssql==2.1.3' -----
+Collecting pymssql==2.1.3
+  Using cached pymssql-2.1.3.tar.gz
+Building wheels for collected packages: pymssql
+  Running setup.py bdist_wheel for pymssql: started
+  Running setup.py bdist_wheel for pymssql: finished with status 'error'
+  Complete output from command "C:\Program Files\Anaconda3\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-8l9px864\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" bdist_wheel -d C:\Users\michael\AppData\Local\Temp\tmpk6bsc8f6pip-wheel- --python-tag cp36:
+  setup.py: platform.system() => 'Windows'
+  setup.py: platform.architecture() => ('64bit', 'WindowsPE')
+  running bdist_wheel
+  running build
+  running build_ext
+  building '_mssql' extension
+  error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": http://landinghub.visualstudio.com/visual-cpp-build-tools
+  
+  ----------------------------------------
+  Failed building wheel for pymssql
+  Running setup.py clean for pymssql
+Failed to build pymssql
+Installing collected packages: pymssql
+  Running setup.py install for pymssql: started
+    Running setup.py install for pymssql: finished with status 'error'
+    Complete output from command "C:\Program Files\Anaconda3\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-8l9px864\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record C:\Users\michael\AppData\Local\Temp\pip-fq4h7sgi-record\install-record.txt --single-version-externally-managed --compile:
+    setup.py: platform.system() => 'Windows'
+    setup.py: platform.architecture() => ('64bit', 'WindowsPE')
+    running install
+    running build
+    running build_ext
+    cythoning _mssql.pyx to _mssql.c
+    warning: _mssql.pyx:143:4: Exception already a builtin Cython type
+    building '_mssql' extension
+    error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": http://landinghub.visualstudio.com/visual-cpp-build-tools
+    
+    ----------------------------------------
+Command ""C:\Program Files\Anaconda3\python.exe" -u -c "import setuptools, tokenize;__file__='C:\\Users\\michael\\AppData\\Local\\Temp\\pip-build-8l9px864\\pymssql\\setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record C:\Users\michael\AppData\Local\Temp\pip-fq4h7sgi-record\install-record.txt --single-version-externally-managed --compile" failed with error code 1 in C:\Users\michael\AppData\Local\Temp\pip-build-8l9px864\pymssql\
+----- Failed to install 'pymssql==2.1.3' -----
+
