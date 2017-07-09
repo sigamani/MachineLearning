@@ -52,9 +52,9 @@ def count_letters(word):
 
 def Accuracy(a,b):
 
-    value = -999.999
-    print(len(a))
-    print(len(b))
+    accuracy = -999.999
+    print("No. characters input: ", len(a))
+    print("No. characters output: ", len(b))
 
     if (len(a) != len(b)):
         print("Input/output text are the same size (cannot compute accuracy).")
@@ -78,6 +78,7 @@ def Scenario1():
     Input = """MAYOR OF LONDON SADIQ KHAN WARNED THE RETIRED COURT OF APPEAL JUDGE MUST URGENTLY IMPROVE RELATIONS WITH LOCAL RESIDENTS. THE FIRE ON 14 JUNE IS THOUGHT TO HAVE KILLED AT LEAST 80 PEOPLE, ALTHOUGH POLICE SAY THE FINAL TOLL WILL NOT BE KNOWN UNTIL AT LEAST THE END OF THE YEAR."""
     expected = """Mayor of London Sadiq Khan warned the retired Court of Appeal judge must urgently improve relations with local residents. The fire on 14 June is thought to have killed at least 80 people, although police say the final toll will not be known until at least the end of the year."""
 
+    print("Scenario1: ")
     result = Method(Input)
     print(result)
 
@@ -90,6 +91,7 @@ def Scenario2():
     Input = """NHS SERVICES ACROSS ENGLAND AND SOME IN SCOTLAND HAVE BEEN HIT BY IT FAILURE, CAUSED BY A LARGE-SCALE CYBER-ATTACK. LEWIS HAMILTON AND VALTTERI BOTTAS SECURED A MERCEDES ONE-TWO IN SECOND PRACTICE AT THE SPANISH GRAND PRIX, COMFORTABLY CLEAR OF THE FERRARIS. POLICE HAVE ARRESTED THREE PEOPLE SUSPECTED OF ILLEGAL BETTING IN THE INDIAN PREMIER LEAGUE (IPL)."""
     expected = """NHS services across England and some in Scotland have been hit by IT failure, caused by a large-scale cyber-attack. Lewis Hamilton and Valtteri Bottas secured a Mercedes one-two in second practice at the Spanish Grand Prix, comfortably clear of the Ferraris. Police have arrested three people suspected of illegal betting in the Indian Premier League (IPL)."""
 
+    print("Scenario2: ")
     result = Method(Input)
     print(result)
 
@@ -102,6 +104,7 @@ def Scenario3():
     Input = state_union.raw("2006-GWBush.txt").upper()
     expected = state_union.raw("2006-GWBush.txt")
 
+    print("Scenario3: ")
     result = Method(Input)
     print(result)
 
@@ -114,6 +117,7 @@ def Scenario4(): # Double Quotations
     Input = """NHS SERVICES ACROSS ENGLAND AND SOME IN SCOTLAND HAVE BEEN "HIT BY IT FAILURE" SAID TOM, CAUSED BY A LARGE-SCALE CYBER-ATTACK. LEWIS HAMILTON AND VALTTERI BOTTAS SECURED A MERCEDES ONE-TWO IN SECOND PRACTICE AT THE SPANISH GRAND PRIX, COMFORTABLY CLEAR OF THE FERRARIS. POLICE HAVE ARRESTED THREE PEOPLE SUSPECTED OF ILLEGAL BETTING IN THE INDIAN PREMIER LEAGUE {IPL}."""
     expected = """NHS services across England and some in Scotland have been "hit by IT failure" said Tom, caused by a large-scale cyber-attack. Lewis Hamilton and Valtteri Bottas secured a Mercedes one-two in second practice at the Spanish Grand Prix, comfortably clear of the Ferraris. Police have arrested three people suspected of illegal betting in the Indian Premier League {IPL}."""
 
+    print("Scenario4: ")
     result = Method(Input)
     print(result)
 
@@ -128,6 +132,7 @@ def Scenario5(): # Single Quotations for plural
     result = Method(Input)
     print(result)
 
+    print("Scenario5: ")
     p = Accuracy(result,expected)
     print("Accuracy: %f" % p)
 
@@ -137,6 +142,7 @@ def Scenario6(): # Question mark as punctuation
     Input = """NHS SERVICES ACROSS ENGLAND AND SOME IN SCOTLAND HAVE BEEN HIT BY IT FAILURE, CAUSED BY A LARGE-SCALE CYBER-ATTACK? LEWIS HAMILTON AND VALTTERI BOTTAS SECURED A MERCEDES ONE-TWO IN SECOND PRACTICE AT THE SPANISH GRAND PRIX, COMFORTABLY CLEAR OF THE FERRARIS. THIS IS A RANDOM CHORUS OF HELLO'S. POLICE HAVE ARRESTED THREE PEOPLE SUSPECTED OF ILLEGAL BETTING IN THE INDIAN PREMIER LEAGUE (IPL)."""
     expected = """NHS services across England and some in Scotland have been hit by IT failure, caused by a large-scale cyber-attack? Lewis Hamilton and Valtteri Bottas secured a Mercedes one-two in second practice at the Spanish Grand Prix, comfortably clear of the Ferraris. This is a random chorus of hello's. Police have arrested three people suspected of illegal betting in the Indian Premier League (IPL)."""
 
+    print("Scenario6: ")
     result = Method(Input)
     print(result)
 
@@ -152,6 +158,7 @@ def Scenario7(): # Single quotations for quotation marks (wont work with current
     result = Method(Input)
     print(result)
 
+    print("Scenario7: ")
     p = Accuracy(result,expected)
     print("Accuracy: %f" % p)
 
@@ -161,6 +168,7 @@ def Scenario8(): # Begin sentence with quote
     Input = """NHS SERVICES ACROSS ENGLAND AND SOME IN SCOTLAND. "WE HAVE BEEN HIT BY IT FAILURE" SAID TOM, CAUSED BY A LARGE-SCALE CYBER-ATTACK. LEWIS HAMILTON AND VALTTERI BOTTAS SECURED A MERCEDES ONE-TWO IN SECOND PRACTICE AT THE SPANISH GRAND PRIX, COMFORTABLY CLEAR OF THE FERRARIS. POLICE HAVE ARRESTED THREE PEOPLE SUSPECTED OF ILLEGAL BETTING IN THE INDIAN PREMIER LEAGUE (IPL)."""
     expected = """NHS services across England and some in Scotland. "We have been hit by IT failure" said Tom, caused by a large-scale cyber-attack. Lewis Hamilton and Valtteri Bottas secured a Mercedes one-two in second practice at the Spanish Grand Prix, comfortably clear of the Ferraris. Police have arrested three people suspected of illegal betting in the Indian Premier League (IPL)."""
 
+    print("Scenario8: ")
     result = Method(Input)
     print(result)
 
@@ -175,13 +183,14 @@ def main():
     print(Method(contents))
 
    #Run test scenarios
-  # Scenario1()
-  # Scenario2()
-  # Scenario4()
-  # Scenario5()
-  # Scenario6()
+   #Scenario1()
+   #Scenario2()
+   #Scenario3()
+   #Scenario4()
+   #Scenario5()
+   #Scenario6()
    #Scenario7()
-  # Scenario8()
+   #Scenario8()
 
 if __name__ == "__main__":
 
