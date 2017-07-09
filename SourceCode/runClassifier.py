@@ -13,11 +13,16 @@ from sklearn import tree
 from sklearn import linear_model, datasets
 from sklearn.naive_bayes import GaussianNB
 
-# We will calculate the P-R curve for each classifier
+# Calculate the P-R curve for each classifier
 from sklearn.metrics import precision_recall_curve, f1_score
 from sklearn.cross_validation import train_test_split
-    
+import pydot
 
+
+features      = ['BkToPr','DivYld','EngsYld','SalesGr',
+                 'AssToEq','MCap','Beta','DbtToEq','1YrVol','5YrVol',
+                 '3YrVol','ExpToCurr','MomST','MomLT','Sent',
+                 'RtnOnEq','TotATrn','SecID']
 
 py.sign_in('michael.sigamani_sr', 'pUwzlMuStskB3R2zemzc')
 
@@ -126,6 +131,13 @@ def get_features_and_labels2(frame):
     return X, y
 
 
+def get_features_and_labels3(frame):
+    
+    arr = np.array(frame, dtype=np.float)
+    X, y = arr[:, :-1], arr[:, -1]
+
+    return X, y
+
 
 # =====================================================================
 
@@ -163,6 +175,7 @@ def evaluate_classifier(X_train, X_test, y_train, y_test):
     score = f1_score(y_test, classifier.predict(X_test))
 
 
+
     # Generate the P-R curve
     y_prob = classifier.decision_function(X_test)
     precision, recall, _ = precision_recall_curve(y_test, y_prob)
@@ -171,16 +184,16 @@ def evaluate_classifier(X_train, X_test, y_train, y_test):
 
     base_classifier = DecisionTreeClassifier(max_depth=6, min_samples_leaf=5, criterion="entropy")
     base_classifier.fit(X_train,y_train)
-    tree.export_graphviz(base_classifier, out_file=r'C:\\Users\\michael\\tree.dot') 
+    tree.export_graphviz(base_classifier, out_file=r'C:\\Users\\michael\\tree.dot', feature_names = features) 
 
 
     # Test the Ada boost classifier
-    classifier = AdaBoostClassifier(base_classifier, n_estimators=500, learning_rate=1.0, algorithm='SAMME.R')
-    
+    classifier = AdaBoostClassifier(base_classifier, n_estimators=500, learning_rate=1.0, algorithm='SAMME.R')    
     # Fit the classifier
     classifier.fit(X_train, y_train)
-
     score = f1_score(y_test, classifier.predict(X_test))
+
+    #getRanking(classifier, X_train)
 
     # Generate the P-R curve
     # classifier.
@@ -191,13 +204,13 @@ def evaluate_classifier(X_train, X_test, y_train, y_test):
     # Include the score in the title
     yield 'Boosted Decision Tree (F1 score={:.3f})'.format(score), precision, recall
     #print(y_prob)
-    makePlot(y_prob1)
+    makeResponsePlot(y_prob)
 
 	# Test a logistic regression classifier 
     classifier = linear_model.LogisticRegression(C=1e5)
     classifier.fit(X_train, y_train)
     score = f1_score(y_test, classifier.predict(X_test))
-    #classifier.predict_proba(X_test)
+   
    
     # Generate the P-R curve
     # classifier.
@@ -219,6 +232,35 @@ def evaluate_classifier(X_train, X_test, y_train, y_test):
 
      
 # =====================================================================
+
+def getRanking(classifier, X):
+
+    importances = classifier.feature_importances_ 
+    std = np.std([tree.feature_importances_ for tree in classifier.estimators_],
+             axis=0)
+    indices = np.argsort(importances)[::-1]
+    
+
+    sortedfeaturelist = [i[0] for i in sorted(zip(features, indices), key=lambda l: l[1], reverse=True)]
+ 
+    # Print the feature ranking
+    print("Feature ranking:")
+
+    for f in range(X.shape[1]):
+        print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+
+    plt.figure(num=None, figsize=(5, 8), dpi=80, facecolor='w', edgecolor='k')
+    plt.xticks(rotation=90)
+    plt.title("Feature importances (Sep-Oct 2016)")
+    plt.bar(range(X.shape[1]), importances[indices],
+       color="r", yerr=std[indices], align="center")
+    plt.xticks(range(X.shape[1]), sortedfeaturelist)
+    plt.xlim([-1, X.shape[1]])
+    plt.show()
+
+    #data = [go.Histogram(x=importances)]
+    #py.iplot(data, filename='FeatureImportance')
+    
 
 
 def plot(results):
@@ -270,19 +312,44 @@ def plotResult(array):
 
 
 
-def makePlot(input):
+def makeResponsePlot(input):
 
   #  x = np.random.randn(500)
-    data = [go.Histogram(x=input)]
+    data = [go.Histogram(x=input, xbins=dict(
+        start=-2.0,
+        end=2.0,
+        size=0.1
+    ))]
+    layout = go.Layout(
 
-    py.iplot(data, filename='Data')
+        title='Feb-Mar 2016 (negative return)',
+        xaxis=dict(
+            title='BDT response',
+            titlefont=dict(
+                family='Courier New, monospace',
+                size=18,
+                color='#7f7f7f'
+            )
+        ),
+        yaxis=dict(
+            title='Entries',
+            titlefont=dict(
+                family='Courier New, monospace',
+                size=18,
+                color='#7f7f7f'
+            )
+        )
+    )
+
+    fig = go.Figure(data=data, layout=layout)
+    py.iplot(fig, filename='Data-B')
     
 
 
 if __name__ == "__main__":
 
-    URL1 = "http://sigamani.com/MachineLearningData/JanFeb2016.data"
-    URL2 = "http://sigamani.com/MachineLearningData/FebMar2016.data"
+    URL1 = "http://sigamani.com/MachineLearningData/JanFeb2016.csv"
+    URL2 = "http://sigamani.com/MachineLearningData/FebMar2016B.csv"
 
     frame = download_data(URL1)
     frame2 = download_data(URL2)
@@ -297,12 +364,14 @@ if __name__ == "__main__":
     X_train, y_train = get_features_and_labels2(frame)
     X_test, y_test = get_features_and_labels2(frame2)
 
+
     # Evaluate multiple classifiers on the data
     print("Evaluating classifiers")
     results = list(evaluate_classifier(X_train, X_test, y_train, y_test))
 
     # Display the results
     print("Plotting the results")
-    plot(results)
+    #plot(results)
  
-
+    #(graph,) = pydot.graph_from_dot_file(r'C:\\Users\\michael\\tree.dot')
+    #graph.write_png(r'C:\\Users\\michael\\tree.png')
