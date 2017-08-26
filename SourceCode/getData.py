@@ -3,9 +3,28 @@ import pandas as pd
 import pyodbc
 import calendar
 import csv
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+#engine = pyodbc.connect('Driver={SQL Server};Server=10.0.60.19;Database=SRPA_ENT_Master;Uid=sa;Pwd=GobStopper;')
 
 
-engine = pyodbc.connect('Driver={SQL Server};Server=10.0.60.19;Database=SRPA_ENT_Master;Uid=sa;Pwd=GobStopper;')
+def getBondsData():
+        #initalise driver
+
+    profile = webdriver.FirefoxProfile()
+
+    browser = webdriver.Firefox(profile)
+    browser.get("https://www.ishares.com/uk/individual/en/products/251725/ishares-euro-aggregate-bond-ucits-etf")
+    agree = browser.find_element_by_xpath("//*[@id='userSelectOverlay']/div[2]/div[1]/div[2]/span[2]/div[2]/div/a").click()
+
+    #wait
+    browser.implicitly_wait(3)
+    click = browser.find_element_by_xpath("//*[@id='fundHeader']/header[2]/div[1]/div[2]/ul/li[2]/a").click()
+
+
+
+
 
 
 
@@ -462,4 +481,5 @@ def getFactorData2(year, startmonth,countryID):
 
 if __name__ == "__main__":
 
-    makeCombinedFiles()
+   # makeCombinedFiles()
+    getBondsData()

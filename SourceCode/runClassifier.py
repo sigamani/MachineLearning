@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import plotly.plotly as py
 import plotly.graph_objs as go
+import plotly.figure_factory as FF
 
 # Import some classifiers to test
 from sklearn.svm import LinearSVC, NuSVC
@@ -239,8 +240,7 @@ def getRanking(classifier, X):
     std = np.std([tree.feature_importances_ for tree in classifier.estimators_],
              axis=0)
     indices = np.argsort(importances)[::-1]
-    
-
+   
     sortedfeaturelist = [i[0] for i in sorted(zip(features, indices), key=lambda l: l[1], reverse=True)]
  
     # Print the feature ranking
@@ -262,53 +262,35 @@ def getRanking(classifier, X):
     #py.iplot(data, filename='FeatureImportance')
     
 
-
-def plot(results):
-    '''
-    Create a plot comparing multiple learners.
-
-    `results` is a list of tuples containing:
-        (title, precision, recall)
-    
-    All the elements in results will be plotted.
-    '''
-
-    # Plot the precision-recall curves
-
-    fig = plt.figure(figsize=(6, 6))
-    fig.canvas.set_window_title('Classifying data')
-
-    for label, precision, recall in results:
-        plt.plot(recall, precision, label=label)
-
-    plt.title('Precision-Recall Curves')
-    plt.xlabel('Precision')
-    plt.ylabel('Recall')
-    plt.legend(loc='lower left')
-
-    plt.tight_layout()
-    plt.show()
-    plt.close()
-
-
 # =====================================================================
 
-def plotResult(array):
+def plot(results):
 
-    fig = plt.figure(figsize=(6, 6))
-    fig.canvas.set_window_title('Test plot')
+    fig = []
+    for label, precision, recall in results:
 
-    range = array.length()
+        data0 = go.Scatter(x = recall, y = precision, name = label)
+        fig.append(data0)
 
-    #plt.plot(x_train)
+    layout = go.Layout(
+    title="Precision-Recall Curve",
+    yaxis = dict( range=[0.5, 0.7],
+                 title='Recall',
+                 titlefont=dict(
+                 family='Courier New, monospace',
+                 size=18,
+                 color='#7f7f7f')),
+    xaxis = dict(title='Precision',
+                 titlefont=dict(
+                 family='Courier New, monospace',
+                 size=18,
+                 color='#7f7f7f'))
+    )
+    
 
-    plt.title('Precision-Recall Curves')
-    plt.xlabel('Precision')
-    plt.ylabel('Recall')
-   # plt.legend(loc='lower left')
-   # plt.tight_layout()
-    plt.show()
-    plt.close()
+    fig = go.Figure(data = fig, layout=layout)
+    py.iplot(fig, filename="test")
+
 
 
 
@@ -349,7 +331,7 @@ def makeResponsePlot(input):
 if __name__ == "__main__":
 
     URL1 = "http://sigamani.com/MachineLearningData/JanFeb2016.csv"
-    URL2 = "http://sigamani.com/MachineLearningData/FebMar2016B.csv"
+    URL2 = "http://sigamani.com/MachineLearningData/FebMar2016.csv"
 
     frame = download_data(URL1)
     frame2 = download_data(URL2)
@@ -364,14 +346,13 @@ if __name__ == "__main__":
     X_train, y_train = get_features_and_labels2(frame)
     X_test, y_test = get_features_and_labels2(frame2)
 
-
     # Evaluate multiple classifiers on the data
     print("Evaluating classifiers")
     results = list(evaluate_classifier(X_train, X_test, y_train, y_test))
 
     # Display the results
     print("Plotting the results")
-    #plot(results)
+    plot(results)
  
     #(graph,) = pydot.graph_from_dot_file(r'C:\\Users\\michael\\tree.dot')
     #graph.write_png(r'C:\\Users\\michael\\tree.png')

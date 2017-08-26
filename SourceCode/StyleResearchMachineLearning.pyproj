@@ -5,7 +5,8 @@
     <ProjectGuid>9fc75f4f-6b9d-40c9-8117-281fae9e425b</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>NLPclassifier.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,6 +25,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Clustering.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NLPclassifier.py">
       <SubType>Code</SubType>
     </Compile>
