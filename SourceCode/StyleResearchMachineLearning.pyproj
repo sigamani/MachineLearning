@@ -5,8 +5,7 @@
     <ProjectGuid>9fc75f4f-6b9d-40c9-8117-281fae9e425b</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>Clustering.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

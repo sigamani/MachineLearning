@@ -7,9 +7,9 @@ import xlrd as xlr
 import operator
 
 
-NFACTORS = 9
+NFACTORS = 84
 THRESHOLD = 0.01
-ITERATIONS = 10
+ITERATIONS = 100 #100
 
 
 factorList = ['Econ - Exposure to Currency Gain',
@@ -23,26 +23,12 @@ factorList = ['Econ - Exposure to Currency Gain',
 'Env - - Environmental - oekom']
 
 
-factorList2 = ['Econ - Exposure to Currency Gain',
+factorList = ['Econ - Exposure to Currency Gain',
 'Econ - Exposure to GDP Surprise',
 'Econ - Exposure to Gold Return',
 'Econ - Exposure to Inflation',
 'Econ - Exposure to Oil Return',
 'Econ - Exposure to Short Rate',
-'Env - - Climate Change - MSCI IVA',
-'Env - - Environmental - GMI',
-'Env - - Environmental - oekom',
-'Env - - Environmental Opp\'s - MSCI IVA',
-'Env - - Natural Resource Use - MSCI IVA',
-'Env - - Waste Management - MSCI IVA',
-'Env - Carbon Footprint - Trucost',
-'Env - Environmental - MSCI IVA',
-'Env - Total Impact Ratio - Trucost',
-'ESG - ESG Overall - GMI',
-'ESG - ESG Overall - MSCI IVA',
-'ESG - ESG Overall - oekom',
-'ESI - Company Volume Indicator - RavenPack',
-'ESI - Stock Sentiment Indicator - RavenPack',
 'Fin - Assets to Equity',
 'G - 3 Year Asset Growth',
 'G - 3 Year Capex Growth',
@@ -72,18 +58,9 @@ factorList2 = ['Econ - Exposure to Currency Gain',
 'G - Sales Growth',
 'G - Sales Growth 5 year',
 'G - Sustainable Growth Rate',
-'Gov - - - Board - GMI',
-'Gov - - - Ownership - GMI',
-'Gov - - - Pay - GMI',
-'Gov - - Business Ethics - MSCI IVA',
-'Gov - - Corporate Governance - MSCI IVA',
-'Gov - - Governance - GMI',
-'Gov - Accounting Governance Risk - GMI',
-'Gov - Governance - MSCI IVA',
 'M - Momentum 12 Month',
 'M - Momentum 12-1',
 'M - Momentum 6 Month',
-'M - Momentum Short Term (6M Exp Wtd)',
 'Misc - Asset Turnover',
 'Misc - Current Ratio (ex-fin)',
 'Misc - Dividend Payout Ratio',
@@ -93,15 +70,10 @@ factorList2 = ['Econ - Exposure to Currency Gain',
 'Q - Earnings Gr Stability 5yr',
 'Q - Low Accruals',
 'Q - Sales Gr Stability 5yr',
-'Q - Stability of Earnings GR Wght',
 'Q - Stability of Earnings Growth',
-'Q - Stability of IBES 12M Earnings Gr Fcast Wght',
 'Q - Stability of IBES 12M Earnings Gr F\'casts',
-'Q - Stability of IBES FY1 Earnings Fcast Rev Wght',
 'Q - Stability of IBES FY1 Earnings F\'cast Rev\'s',
 'Q - Stability of Returns',
-'Q - Stability of Returns wght',
-'Q - Stability of Sales GR Wght',
 'Q - Stability of Sales Growth',
 'Rsk - Beta',
 'Rsk - Daily Volatility (1 Yr)',
@@ -111,17 +83,10 @@ factorList2 = ['Econ - Exposure to Currency Gain',
 'Rsk - Volatility 3 Year',
 'Rsk - Volatility 5 Year',
 'S - Market Cap',
-'S - Market Cap Free Float',
 'S - Total Book Value',
 'S - Total Earnings',
 'S - Total Number of Employees',
 'S - Total Sales',
-'SG - - Social & Governance - oekom',
-'Soc - - Human Capital - MSCI IVA',
-'Soc - - Product Safety - MSCI IVA',
-'Soc - - Social - GMI',
-'Soc - - Social Opportunites - MSCI IVA',
-'Soc - Social - MSCI IVA',
 'V - Book Value per Share to Price',
 'V - Cashflow per Share to Price',
 'V - Cyc Adj Engs Yld',
@@ -155,7 +120,11 @@ def makeReturnSeriesMatrix0(sheet):
     for j in range(NFACTORS):
         
         list = []
-        for i in range(181,241):  #last 60M
+      #  for i in range(181,241):  #last 60M
+      #  for i in range(120,180):  #last 60M
+      #  for i in range(119,179):  #last 60M
+        for i in range(58,118):  #last 60M
+
             value = sheet.cell_value(j+1,i)
             list.append(value)
 
@@ -165,24 +134,30 @@ def makeReturnSeriesMatrix0(sheet):
 
 
 
-def makeReturnSeriesMatrix1(m, list):
 
-    newList = []    
+def makeReturnSeriesMatrix1(m, list, counter):
+
+    newList2 = []
+
     lList = len(list) 
     
+
+
     for i in range(0,60):
     
         val = 0
         for j in range(lList):
 
             val += m[list[j]][i]
-     
-       
-        newList.append( val / lList )         
+          
+        newList2.append( val ) 
 
-    m.append(newList)
+
+    count = counter[list[0]] + counter[list[1]]
+
+    m.append(newList2)
+    counter.append(count)
     return m
-
 
 
 
@@ -222,15 +197,26 @@ def getResult0(m, iteration):
                 imax = i
                 jmax = j
     
+
     print( "%f, %s, %s" % ( max, factorList[imax], factorList[jmax]) )               
     return (max, imax, jmax)   
 
 
 
 
-def getResult1(m, list, iteration):
+def getResult1(m, list, iteration, counter):
 
-    corrs = getCorrelation(m, iteration)    
+    newM = []
+
+    for i in range(NFACTORS+iteration):
+        newM.append([])
+
+        for j in range(0,60):
+            newM[i].append(m[i][j]/counter[i])
+
+  
+
+    corrs = getCorrelation(newM, iteration)    
 
     max = 0
     jmax=0
@@ -261,8 +247,8 @@ def getResult1(m, list, iteration):
 
 if __name__ == "__main__":
 
-    dir = r"C:\\Users\\michael\\Desktop\\"
-    file = dir + "Dev 1500 CASA.xlsx"
+    dir = r"C:\\Users\\michael\\Downloads\\"
+    file = dir + "Dev 1500 CASA2.xlsx"
     book=xlr.open_workbook(file)                         
     sheet=book.sheet_by_name('Rel returns')  
 
@@ -270,6 +256,7 @@ if __name__ == "__main__":
     r0 = getResult0(m0, 0) # returns tuple correlation with name of factor
     list = []
     list2= []
+   
     list.append(r0[1])
     list.append(r0[2])
 
@@ -280,11 +267,16 @@ if __name__ == "__main__":
     s = factorList[r0[1]] + ", " + factorList[r0[2]] 
     factorList.append(s)
 
+    counter = []
+    for i in range(NFACTORS):
+        counter.append(1)
+
 
     for i in range(1,ITERATIONS):
-
-        m1 = makeReturnSeriesMatrix1(m0, list)
-        r1 = getResult1(m1, list2,i)
+         
+        m1 = makeReturnSeriesMatrix1(m0, list, counter) # duplicate matrix
+        r1 = getResult1(m1, list2,i, counter)
+           
         list = []
         list.append(r1[1])
         list.append(r1[2])
