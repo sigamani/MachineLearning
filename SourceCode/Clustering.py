@@ -7,106 +7,102 @@ import xlrd as xlr
 import operator
 
 
-NFACTORS = 84
+NFACTORS = 87
 THRESHOLD = 0.01
-ITERATIONS = 100 #100
+ITERATIONS = 100 
+RANGE = 1           # 1: Aug1997-July2002, 2: Aug2002-July2007, 3: Aug2007-July2012, 4: Aug2012-July2017 
 
 
-factorList = ['Econ - Exposure to Currency Gain',
-'Econ - Exposure to GDP Surprise',
-'Econ - Exposure to Gold Return',
-'Econ - Exposure to Inflation',
-'Econ - Exposure to Oil Return',
-'Econ - Exposure to Short Rate',
-'Env - - Climate Change - MSCI IVA',
-'Env - - Environmental - GMI',
-'Env - - Environmental - oekom']
 
-
-factorList = ['Econ - Exposure to Currency Gain',
-'Econ - Exposure to GDP Surprise',
-'Econ - Exposure to Gold Return',
-'Econ - Exposure to Inflation',
-'Econ - Exposure to Oil Return',
-'Econ - Exposure to Short Rate',
-'Fin - Assets to Equity',
-'G - 3 Year Asset Growth',
-'G - 3 Year Capex Growth',
-'G - 5 Year Asset Growth',
-'G - 5 Year Capex Growth',
-'G - 5 Year Div Growth',
-'G - Earnings Growth 5 year',
-'G - Gross Profit Margin',
-'G - Gross Profits to Assets',
-'G - Growth in Earnings per Share',
-'G - IBES 12M Rev (1M)',
-'G - IBES 12M Rev (3M)',
-'G - IBES Earnings 12 Month Growth F\'casts',
-'G - IBES Earnings Long Term Growth F\'casts',
-'G - IBES FY1 Earnings F\'cast Rev\'s 1M Sample',
-'G - IBES FY1 Earnings F\'cast Rev\'s 3M Sample',
-'G - IBES FY2 Earnings F\'cast Rev\'s 1M Sample',
-'G - IBES FY2 Earnings F\'cast Rev\'s 3M Sample',
-'G - IBES ROE',
-'G - IBES Sales 12 Month Growth F\'casts',
-'G - IBES Sales Long Term Growth F\'casts',
-'G - Income to Sales (Profit Margin)',
-'G - Operating Profit Margin',
-'G - Return on Assets',
-'G - Return on Equity',
-'G - Return on Invested Capital',
-'G - Sales Growth',
-'G - Sales Growth 5 year',
-'G - Sustainable Growth Rate',
-'M - Momentum 12 Month',
-'M - Momentum 12-1',
-'M - Momentum 6 Month',
-'Misc - Asset Turnover',
-'Misc - Current Ratio (ex-fin)',
-'Misc - Dividend Payout Ratio',
-'Misc - Int Coverage Ratio (ex-fin)',
-'Misc - Quick Ratio (ex-fin)',
-'Misc - Trading Turnover 3M',
-'Q - Earnings Gr Stability 5yr',
-'Q - Low Accruals',
-'Q - Sales Gr Stability 5yr',
-'Q - Stability of Earnings Growth',
-'Q - Stability of IBES 12M Earnings Gr F\'casts',
-'Q - Stability of IBES FY1 Earnings F\'cast Rev\'s',
-'Q - Stability of Returns',
-'Q - Stability of Sales Growth',
-'Rsk - Beta',
-'Rsk - Daily Volatility (1 Yr)',
-'Rsk - Debt to Equity',
-'Rsk - Foreign Sales as % of Total Sales',
-'Rsk - Volatility 1 Year',
-'Rsk - Volatility 3 Year',
-'Rsk - Volatility 5 Year',
+factorList = [
+'V - Total Shareholder Yield',
+'V - Sales to EV',
+'V - Sales per Share to Price',
+'V - Net Payout Yield',
+'V - Net Debt Paydown Yield',
+'V - Net Buyback Yield',
+'V - Inverse PEGY',
+'V - Inverse PEG',
+'V - IBES F\'cast Sales Yield',
+'V - IBES F\'cast Earnings Yield',
+'V - IBES F\'cast Dividend Yield',
+'V - Free Cashflow Yield',
+'V - EBITDA to Price',
+'V - EBITDA to EV',
+'V - EBIT to EV',
+'V - Earnings per Share to Price',
+'V - Dividend Yield',
+'V - Cyc Adj Engs Yld',
+'V - Cashflow per Share to Price',
+'V - Book Value per Share to Price',
 'S - Market Cap',
+'Rsk - Volatility 5 Year',
+'Rsk - Volatility 3 Year',
+'Rsk - Volatility 1 Year',
+'Rsk - Foreign Sales as % of Total Sales',
+'Rsk - Debt to Equity',
+'Rsk - Daily Volatility (1 Yr)',
+'Rsk - Beta',
+'Q - Stability of Sales Growth',
+'Q - Stability of Returns',
+'Q - Stability of IBES FY1 Earnings F\'cast Rev\'s',
+'Q - Stability of IBES 12M Earnings Gr F\'casts',
+'Q - Stability of Earnings Growth',
+'Q - Sales Gr Stability 5yr',
+'Q - Low Accruals',
+'Q - Earnings Gr Stability 5yr',
+'Misc - Trading Turnover 3M',
+'Misc - Quick Ratio (ex-fin)',
+'Misc - Int Coverage Ratio (ex-fin)',
+'Misc - Dividend Payout Ratio',
+'Misc - Current Ratio (ex-fin)',
+'Misc - Asset Turnover',
+'M - Momentum Short Term (6M Exp Wtd)',
+'M - Momentum 6 Month',
+'M - Momentum 12-1',
+'M - Momentum 12 Month',
+'G - Sustainable Growth Rate',
+'G - Sales Growth 5 year',
+'G - Sales Growth',
+'G - Return on Invested Capital',
+'G - Return on Equity',
+'G - Return on Assets',
+'G - Operating Profit Margin',
+'G - Income to Sales (Profit Margin)',
+'G - IBES Sales Long Term Growth F\'casts',
+'G - IBES Sales 12 Month Growth F\'casts',
+'G - IBES ROE',
+'G - IBES FY2 Earnings F\'cast Rev\'s 3M Sample',
+'G - IBES FY2 Earnings F\'cast Rev\'s 1M Sample',
+'G - IBES FY1 Earnings F\'cast Rev\'s 3M Sample',
+'G - IBES FY1 Earnings F\'cast Rev\'s 1M Sample',
+'G - IBES Earnings Long Term Growth F\'casts',
+'G - IBES Earnings 12 Month Growth F\'casts',
+'G - IBES 12M Rev (3M)',
+'G - IBES 12M Rev (1M)',
+'G - Growth in Earnings per Share',
+'G - Gross Profits to Assets',
+'G - Gross Profit Margin',
+'G - Earnings Growth 5 year',
+'G - 5 Year Div Growth',
+'G - 5 Year Capex Growth',
+'G - 5 Year Asset Growth',
+'G - 3 Year Capex Growth',
+'G - 3 Year Asset Growth',
+'Fin - Assets to Equity',
+'ESI - Stock Sentiment Indicator - RavenPack',
+'ESI - Company Volume Indicator - RavenPack',
 'S - Total Book Value',
 'S - Total Earnings',
 'S - Total Number of Employees',
-'S - Total Sales',
-'V - Book Value per Share to Price',
-'V - Cashflow per Share to Price',
-'V - Cyc Adj Engs Yld',
-'V - Dividend Yield',
-'V - Earnings per Share to Price',
-'V - EBIT to EV',
-'V - EBITDA to EV',
-'V - EBITDA to Price',
-'V - Free Cashflow Yield',
-'V - IBES F\'cast Dividend Yield',
-'V - IBES F\'cast Earnings Yield',
-'V - IBES F\'cast Sales Yield',
-'V - Inverse PEG',
-'V - Inverse PEGY',
-'V - Net Buyback Yield',
-'V - Net Debt Paydown Yield',
-'V - Net Payout Yield',
-'V - Sales per Share to Price',
-'V - Sales to EV',
-'V - Total Shareholder Yield']
+'Econ - Exposure to Currency Gain',
+'Econ - Exposure to GDP Surprise',
+'Econ - Exposure to Gold Return',
+'Econ - Exposure to Inflation',
+'Econ - Exposure to Oil Return',
+'Econ - Exposure to Short Rate',
+'S - Total Sales',   
+]
 
 
 
@@ -120,10 +116,36 @@ def makeReturnSeriesMatrix0(sheet):
     for j in range(NFACTORS):
         
         list = []
-      #  for i in range(181,241):  #last 60M
-      #  for i in range(120,180):  #last 60M
-      #  for i in range(119,179):  #last 60M
-        for i in range(58,118):  #last 60M
+        startMonth = 0
+        endMonth = 0
+
+        #if (RANGE == 1):
+        #    startMonth = 58
+        #    endMonth = 118
+        #if (RANGE == 2):
+        #    startMonth = 119
+        #    endMonth = 179
+        #if (RANGE == 3):
+        #    startMonth = 120
+        #    endMonth = 180
+        #if (RANGE == 4):
+        #    startMonth = 181
+        #    endMonth = 241
+
+        if (RANGE == 1):
+            startMonth = 209
+            endMonth = 269
+        if (RANGE == 2):
+            startMonth = 270
+            endMonth = 330
+        if (RANGE == 3):
+            startMonth = 331
+            endMonth = 391
+        if (RANGE == 4):
+            startMonth = 392
+            endMonth = 452
+
+        for i in range(startMonth,endMonth):  
 
             value = sheet.cell_value(j+1,i)
             list.append(value)
@@ -138,10 +160,8 @@ def makeReturnSeriesMatrix0(sheet):
 def makeReturnSeriesMatrix1(m, list, counter):
 
     newList2 = []
-
     lList = len(list) 
     
-
 
     for i in range(0,60):
     
@@ -176,6 +196,7 @@ def getCorrelation(m, iteration):
             results[k].append(temp)
 
     return results  
+
 
 
 def getResult0(m, iteration):
@@ -248,8 +269,9 @@ def getResult1(m, list, iteration, counter):
 if __name__ == "__main__":
 
     dir = r"C:\\Users\\michael\\Downloads\\"
-    file = dir + "Dev 1500 CASA2.xlsx"
-    book=xlr.open_workbook(file)                         
+    #file = dir + "Dev 1500 CASA2.xlsx"
+    file = dir + "US 1000.xlsx"
+    book=xlr.open_workbook(file)          
     sheet=book.sheet_by_name('Rel returns')  
 
     m0 = makeReturnSeriesMatrix0(sheet)
@@ -274,7 +296,7 @@ if __name__ == "__main__":
 
     for i in range(1,ITERATIONS):
          
-        m1 = makeReturnSeriesMatrix1(m0, list, counter) # duplicate matrix
+        m1 = makeReturnSeriesMatrix1(m0, list, counter) 
         r1 = getResult1(m1, list2,i, counter)
            
         list = []
